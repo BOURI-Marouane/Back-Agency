@@ -3,7 +3,7 @@ package ma.atos.agency.web.controllers;
 import ma.atos.agency.dto.PrivilegeDto;
 import ma.atos.agency.entities.Privilege;
 import ma.atos.agency.exceptions.PrivilegeNotFoundException;
-import ma.atos.agency.web.imp.PrivilegeService;
+import ma.atos.agency.services.imp.PrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

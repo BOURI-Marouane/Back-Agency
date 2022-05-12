@@ -1,13 +1,10 @@
 
 package ma.atos.agency.web.controllers;
 
-import ma.atos.agency.dto.PrivilegeDto;
 import ma.atos.agency.dto.RoleDto;
-import ma.atos.agency.entities.Privilege;
 import ma.atos.agency.entities.Role;
-import ma.atos.agency.exceptions.PrivilegeNotFoundException;
 import ma.atos.agency.exceptions.RoleNotFoundException;
-import ma.atos.agency.web.services.RoleService;
+import ma.atos.agency.services.imp.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +19,7 @@ public class RoleController {
     List<RoleDto> all() {
         return roleService.getAll();
     }
-/*
+
     @PostMapping("/roles")
     RoleDto createRole(@RequestBody RoleDto newRoleDto) {
         Role role = roleService.newRole(newRoleDto);
@@ -43,5 +40,5 @@ public class RoleController {
     void deleteRole(@PathVariable Long id) throws RoleNotFoundException {
         roleService.deleteRole(id);
     }
-*/
+
 }

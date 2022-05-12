@@ -1,13 +1,12 @@
-package ma.atos.agency.web.services;
+package ma.atos.agency.services.imp;
 
-import ma.atos.agency.dto.PrivilegeDto;
 import ma.atos.agency.dto.RoleDto;
 import ma.atos.agency.entities.Privilege;
 import ma.atos.agency.entities.Role;
-import ma.atos.agency.exceptions.PrivilegeNotFoundException;
 import ma.atos.agency.exceptions.RoleNotFoundException;
 import ma.atos.agency.repositories.PrivilegeRepository;
 import ma.atos.agency.repositories.RoleRepository;
+import ma.atos.agency.services.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 @Service
-public class RoleService {
+public class RoleService implements IRoleService {
     @Autowired
     private PrivilegeRepository privilegeRepository;
     @Autowired
@@ -73,14 +72,11 @@ public class RoleService {
     public void deleteRole(Long id) throws RoleNotFoundException {
         Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
         for (Privilege privilege : role.getPrivileges()) {
-            try {
-                privilegeRepository.findById(privilege.getId()).orElseThrow(() -> new PrivilegeNotFoundException(role.getId()));
-            }catch (PrivilegeNotFoundException e){
-                continue;
-            }
-            privilege.getRoles().remove(role);
+            privilege.remove(role);
             privilegeRepository.save(privilege);
+
         }
+        roleRepository.save(role);
         roleRepository.deleteById(id);
     }
 
