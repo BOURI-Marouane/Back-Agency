@@ -2,9 +2,12 @@ package ma.atos.agency.web.controllers;
 
 import ma.atos.agency.dto.PrivilegeDto;
 import ma.atos.agency.entities.Privilege;
+import ma.atos.agency.exceptions.PrivilegeNameInvalidException;
 import ma.atos.agency.exceptions.PrivilegeNotFoundException;
+import ma.atos.agency.exceptions.RoleNotFoundException;
 import ma.atos.agency.services.imp.PrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +23,13 @@ public class PrivilegeController {
     }
 
     @PostMapping("/privileges")
-    PrivilegeDto createPrivilege(@RequestBody PrivilegeDto newPrivilegeDto) {
-        Privilege privilege = privilegeService.newPrivilege(newPrivilegeDto);
+    PrivilegeDto createPrivilege(@RequestBody PrivilegeDto newPrivilegeDto) throws PrivilegeNameInvalidException {
+        Privilege privilege;
+        try {
+             privilege = privilegeService.newPrivilege(newPrivilegeDto);
+        }catch(Exception e){
+            throw new PrivilegeNameInvalidException();
+        }
         return new PrivilegeDto(privilege.getId(), privilege.getName());
     }
 

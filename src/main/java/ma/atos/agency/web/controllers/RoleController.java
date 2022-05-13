@@ -3,6 +3,7 @@ package ma.atos.agency.web.controllers;
 
 import ma.atos.agency.dto.RoleDto;
 import ma.atos.agency.entities.Role;
+import ma.atos.agency.exceptions.RoleNameInvalidExeption;
 import ma.atos.agency.exceptions.RoleNotFoundException;
 import ma.atos.agency.services.imp.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,13 @@ public class RoleController {
     }
 
     @PostMapping("/roles")
-    RoleDto createRole(@RequestBody RoleDto newRoleDto) {
-        Role role = roleService.newRole(newRoleDto);
+    RoleDto createRole(@RequestBody RoleDto newRoleDto) throws RoleNameInvalidExeption {
+        try{
+            return new RoleDto(roleService.newRole(newRoleDto));
+        }catch (Exception e){
+            throw new RoleNameInvalidExeption();
+        }
 
-        return new RoleDto(role);
     }
     @GetMapping("/roles/{id}")
     RoleDto one(@PathVariable Long id) throws RoleNotFoundException {
