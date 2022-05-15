@@ -21,6 +21,8 @@ public class Agency {
     private String adress;
     @OneToMany(mappedBy = "agency")
     private List<Gestionnaire> list;
+    @OneToMany(mappedBy = "agency")
+    private List<Client> clientList;
     private boolean status;
 
 }

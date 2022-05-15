@@ -14,5 +14,8 @@ public class Client {
     private long clientId;
 
     private String name;
-    //List<Agency> agencies;
+
+    @ManyToOne
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
 }
