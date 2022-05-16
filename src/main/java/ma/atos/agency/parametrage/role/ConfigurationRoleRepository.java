@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface ConfigurationRoleRepository extends JpaRepository<ConfigurationRole,Integer> {
-    @Cacheable("roles")
+    @Cacheable("addresses")
     List<ConfigurationRole> findAll();
 }

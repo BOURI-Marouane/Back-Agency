@@ -3,7 +3,6 @@ package ma.atos.agency.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.atos.agency.annotations.role.RoleValidation;
 import ma.atos.agency.entities.Role;
 
 import java.util.HashSet;
@@ -13,7 +12,6 @@ import java.util.Set;
 public class RoleDto {
 
     private Long id;
-    @RoleValidation()
     private String name;
     private Set<String> privileges;
 
