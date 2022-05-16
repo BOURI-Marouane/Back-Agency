@@ -3,16 +3,20 @@ package ma.atos.agency.services.imp;
 import ma.atos.agency.dto.RoleDto;
 import ma.atos.agency.entities.Privilege;
 import ma.atos.agency.entities.Role;
+import ma.atos.agency.exceptions.InvalidRoleNameException;
+import ma.atos.agency.exceptions.ListRoleEmptyException;
+import ma.atos.agency.exceptions.PrivilegeNotFoundException;
 import ma.atos.agency.exceptions.RoleNotFoundException;
 import ma.atos.agency.repositories.PrivilegeRepository;
 import ma.atos.agency.repositories.RoleRepository;
 import ma.atos.agency.services.IRoleService;
+import ma.atos.agency.validation.RoleValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 @Service
 public class RoleService implements IRoleService {
@@ -20,64 +24,42 @@ public class RoleService implements IRoleService {
     private PrivilegeRepository privilegeRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private RoleValidation roleValidation;
 
-    public List<RoleDto> getAll() {
-        List<RoleDto> listdto = new ArrayList<>();
+    public List<Role> getAll() throws ListRoleEmptyException {
         List<Role> list = roleRepository.findAll();
-        list.forEach( item -> {
-            Set<String> privileges = new HashSet<>();
-            item.getPrivileges().forEach(privilege -> {
-                privileges.add(privilege.getName());
-            });
-            RoleDto dtoItem = new RoleDto(item.getId(),item.getName(),privileges);
-            listdto.add(dtoItem);
-        });
-        return listdto;
+        if (list.isEmpty())
+            throw new ListRoleEmptyException();
+        return list;
     }
 
-    public Role newRole(RoleDto roleDto){
+    public Role newRole(Role role) throws InvalidRoleNameException {
 
-        Role role = new Role(0L,roleDto.getName(), new HashSet<>());
-        roleDto.getPrivileges().forEach(privilege ->{
-           Privilege p = privilegeRepository.findByName(privilege);
-           if( p != null)
-           role.getPrivileges().add(p);
-        });
-        return roleRepository.save(role);
+        if(roleValidation.isValid(role))
+            return roleRepository.save(role);
+        throw new InvalidRoleNameException();
 
     }
 
-    public RoleDto getRole(Long id) throws RoleNotFoundException {
-        Role role = roleRepository.findById(id).orElseThrow( () -> new RoleNotFoundException(id));
-        return new RoleDto(role);
+    public Role getRole(Long id) throws RoleNotFoundException {
+        Optional<Role> privilege = roleRepository.findById(id);
+        if(privilege.isPresent())
+            return privilege.get();
+        throw new RoleNotFoundException();
     }
 
-    public Role replaceRole(RoleDto newRoleDto,Long id) throws RoleNotFoundException {
-        Set<Privilege> listPriveleges = new HashSet<>();
-        newRoleDto.getPrivileges().forEach(privilege ->{
-            Privilege p = privilegeRepository.findByName(privilege);
-            if( p != null)
-                listPriveleges.add(p);
-        });
-
-        return roleRepository.findById(id)
-                .map(role -> {
-                    role.setName(newRoleDto.getName());
-                    role.setPrivileges(listPriveleges);
-                    return roleRepository.save(role);
-                })
-                .orElseThrow(() -> new RoleNotFoundException(id));
+    public Role replaceRole(Role role) throws RoleNotFoundException, InvalidRoleNameException {
+        this.getRole(role.getId());
+        return this.newRole(role);
     }
 
-    public void deleteRole(Long id) throws RoleNotFoundException {
-        Role role = roleRepository.findById(id).orElseThrow(() -> new RoleNotFoundException(id));
-        for (Privilege privilege : role.getPrivileges()) {
-            privilege.remove(role);
-            privilegeRepository.save(privilege);
-
-        }
-        roleRepository.save(role);
-        roleRepository.deleteById(id);
+    public String deleteRole(Long id) throws RoleNotFoundException, InvalidRoleNameException {
+        Role role = this.getRole(id);
+        role.setPrivileges(null);
+        this.replaceRole(role);
+        roleRepository.delete(role);
+        return role.getName();
     }
 
 

@@ -1,19 +1,20 @@
 package ma.atos.agency.services.imp;
 
 
-import ma.atos.agency.dto.PrivilegeDto;
 import ma.atos.agency.entities.Privilege;
 import ma.atos.agency.entities.Role;
+import ma.atos.agency.exceptions.InvalidPrivilegeNameException;
+import ma.atos.agency.exceptions.ListPrivilegeEmptyException;
 import ma.atos.agency.exceptions.PrivilegeNotFoundException;
 import ma.atos.agency.repositories.PrivilegeRepository;
 import ma.atos.agency.repositories.RoleRepository;
 import ma.atos.agency.services.IPrivilegeService;
+import ma.atos.agency.validation.PrivilegeValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PrivilegeService implements IPrivilegeService {
@@ -22,51 +23,45 @@ public class PrivilegeService implements IPrivilegeService {
     private PrivilegeRepository privilegeRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PrivilegeValidation privilegeValidation;
+
 
     @Override
-    public List<PrivilegeDto> getAll() {
-        List<PrivilegeDto> listdto = new ArrayList<>();
+    public List<Privilege> getAll() throws ListPrivilegeEmptyException {
         List<Privilege> list = privilegeRepository.findAll();
-        list.forEach( item -> {
-            PrivilegeDto dtoItem = new PrivilegeDto(item.getId(),item.getName());
-            listdto.add(dtoItem);
-        });
-        return listdto;
+        if (list.isEmpty())
+            throw new ListPrivilegeEmptyException();
+        return list;
     }
     @Override
-    public Privilege newPrivilege(PrivilegeDto privilegeDto){
-        Privilege privilege = new Privilege(0L,privilegeDto.getName(), new HashSet<>());
-        return privilegeRepository.save(privilege);
+    public Privilege newPrivilege(Privilege privilege) throws InvalidPrivilegeNameException {
+        if(privilegeValidation.isValid(privilege))
+            return privilegeRepository.save(privilege);
+        throw new InvalidPrivilegeNameException();
+    }
 
+
+    @Override
+    public Privilege getPrivilege(Long id) throws PrivilegeNotFoundException {
+        Optional<Privilege> privilege = privilegeRepository.findById(id);
+        if(privilege.isPresent())
+            return privilege.get();
+        throw new PrivilegeNotFoundException();
     }
     @Override
-    public PrivilegeDto getPrivilege(Long id) throws PrivilegeNotFoundException {
-        Privilege privilege = privilegeRepository.findById(id).orElseThrow( () -> new PrivilegeNotFoundException(id));
-        return new PrivilegeDto(privilege.getId(),privilege.getName());
+    public Privilege replacePrivilege(Privilege privilege) throws InvalidPrivilegeNameException, PrivilegeNotFoundException {
+        this.getPrivilege(privilege.getId());
+        return this.newPrivilege(privilege);
     }
     @Override
-    public Privilege replacePrivilege(PrivilegeDto newPrivilegeDto,Long id) throws PrivilegeNotFoundException {
-
-        return privilegeRepository.findById(id)
-                .map(privilege -> {
-                    privilege.setName(newPrivilegeDto.getName());
-                    return privilegeRepository.save(privilege);
-                })
-                .orElseThrow(() -> new PrivilegeNotFoundException(id));
-    }
-    @Override
-    public void deletePrivilege(Long id) throws PrivilegeNotFoundException {
-
-        Privilege privilege = privilegeRepository.findById(id).orElseThrow(() -> new PrivilegeNotFoundException(id));
-        for (Role role : privilege.getRoles()) {
-            role.removePrivilege(privilege);
-            roleRepository.save(role);
-
-
+    public String deletePrivilege(Long id) throws PrivilegeNotFoundException, InvalidPrivilegeNameException {
+        Privilege privilege = this.getPrivilege(id);
+        privilege.setRoles(null);
+        this.replacePrivilege(privilege);
+        privilegeRepository.delete(privilege);
+        return privilege.getName();
         }
-        privilegeRepository.save(privilege);
-        privilegeRepository.deleteById(id);
-
 
     }
 
@@ -74,4 +69,4 @@ public class PrivilegeService implements IPrivilegeService {
 
 
 
-}
+

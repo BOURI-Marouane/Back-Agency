@@ -3,7 +3,6 @@ package ma.atos.agency.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.atos.agency.annotations.role.RoleValidation;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,7 +15,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @RoleValidation()
+    @Column(unique = true)
     private String name;
 
     @ManyToMany
