@@ -3,6 +3,7 @@ package ma.atos.agency.web.controllers;
 import ma.atos.agency.dto.ClientDto;
 import ma.atos.agency.entities.Client;
 import ma.atos.agency.exceptions.ClientNotFoundException;
+import ma.atos.agency.mappers.ClientMapper;
 import ma.atos.agency.services.imp.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ public class ClientController {
     @PostMapping("/addClient")
     ClientDto createClient(@RequestBody ClientDto newClientDto) {
         Client client = clientService.newClient(newClientDto);
-        return new ClientDto(client.getClientId(), client.getName(), client.getAgency());
+        return ClientMapper.toClientDto(client);
     }
 
     @PostMapping("/showClients")
@@ -35,8 +36,7 @@ public class ClientController {
 
     @PostMapping("/updateClient")
     ClientDto updateClient(@RequestBody ClientDto newClientDto, Long clientId) throws ClientNotFoundException {
-        Client client = clientService.updateClient(newClientDto, clientId);
-        return new ClientDto(client.getClientId(), client.getName(), client.getAgency());
+        return clientService.updateClient(newClientDto, clientId);
     }
 
     @PostMapping("/deleteClient")
