@@ -14,7 +14,7 @@ public interface IClientService {
 
     void deleteClient(Long clientId) throws ClientNotFoundException;
 
-    Client updateClient(ClientDto newClient, Long clientId) throws ClientNotFoundException;
+    ClientDto updateClient(ClientDto newClient, Long clientId) throws ClientNotFoundException;
 
     List<ClientDto> getAll();
 

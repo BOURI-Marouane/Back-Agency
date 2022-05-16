@@ -1,9 +1,13 @@
 package ma.atos.agency.services.imp;
 
 import ma.atos.agency.dto.ClientDto;
+import ma.atos.agency.dto.GestionnaireDto;
 import ma.atos.agency.entities.Agency;
 import ma.atos.agency.entities.Client;
+import ma.atos.agency.entities.Gestionnaire;
 import ma.atos.agency.exceptions.ClientNotFoundException;
+import ma.atos.agency.mappers.ClientMapper;
+import ma.atos.agency.mappers.GestionnaireConverter;
 import ma.atos.agency.repositories.AgencyRepository;
 import ma.atos.agency.repositories.ClientRepository;
 import ma.atos.agency.services.IClientService;
@@ -24,14 +28,14 @@ public class ClientService implements IClientService {
 
     @Override
     public Client newClient(ClientDto clientDto){
-        Client client = new Client(0L, clientDto.getName(), clientDto.getAgency());
+        Client client = new Client();
         return clientRepository.save(client);
     }
 
     @Override
     public ClientDto getClient(Long clientId) throws ClientNotFoundException {
         Client client = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException(clientId));
-        return new ClientDto(client.getClientId(), client.getName(), client.getAgency());
+        return ClientMapper.toClientDto(client);
     }
 
     @Override
@@ -39,7 +43,7 @@ public class ClientService implements IClientService {
         List<ClientDto> listClientDto = new ArrayList<>();
         List<Client> listClient = clientRepository.findAll();
         listClient.forEach(item -> {
-            ClientDto dtoItem = new ClientDto(item.getClientId(), item.getName(), item.getAgency());
+            ClientDto dtoItem = ClientMapper.toClientDto(item);
             listClientDto.add(dtoItem);
         });
         return listClientDto;
@@ -57,11 +61,12 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Client updateClient(ClientDto newClient, Long clientId) throws ClientNotFoundException{
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException(clientId));
-        client.setClientId(newClient.getClientId());
-        client.setAgency(newClient.getAgency());
-        client.setName(newClient.getName());
-        return clientRepository.save(client);
+    public ClientDto updateClient(ClientDto newClient, Long clientId) throws ClientNotFoundException{
+        Client oldClient = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException(clientId));
+        Client clientToUpdate = ClientMapper.toClient(newClient);
+        oldClient.setClientId(clientToUpdate.getClientId());
+        oldClient.setName(clientToUpdate.getName());
+        oldClient.setAgency(clientToUpdate.getAgency());
+        return ClientMapper.toClientDto(clientRepository.save(oldClient));
     }
 }
