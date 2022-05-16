@@ -1,12 +1,14 @@
 package ma.atos.agency.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 
-@AllArgsConstructor @NoArgsConstructor @Data
+@Getter
+@Setter
+@ToString
 public class PrivilegeDto {
 
     private Long id;

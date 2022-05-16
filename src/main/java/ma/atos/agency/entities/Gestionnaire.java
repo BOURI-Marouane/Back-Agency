@@ -11,8 +11,6 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Gestionnaire {
 
     @Id

@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor @AllArgsConstructor @Data
+@Data
 public class Privilege {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

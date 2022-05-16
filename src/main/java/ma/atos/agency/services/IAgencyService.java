@@ -1,7 +1,9 @@
 package ma.atos.agency.services;
 
 import ma.atos.agency.dto.AgencyDto;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface IAgencyService {
 
     AgencyDto newAgency(AgencyDto agencyDto);

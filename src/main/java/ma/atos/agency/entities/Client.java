@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor @AllArgsConstructor @Data
+@Data
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

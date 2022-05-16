@@ -1,15 +1,13 @@
 package ma.atos.agency.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Data
-@AllArgsConstructor @NoArgsConstructor
 public class Role {
 
     @Id

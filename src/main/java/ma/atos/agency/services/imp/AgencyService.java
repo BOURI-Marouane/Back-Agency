@@ -9,33 +9,42 @@ import ma.atos.agency.services.IAgencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AgencyService implements IAgencyService {
     @Autowired
     AgencyRepository agencyRepository;
+
+    @Autowired  AgencyConverter agencyConverter;
+
     @Override
     public AgencyDto newAgency(AgencyDto agencyDto) {
         AgencyDto agencyDtoNew = new AgencyDto();
         agencyDtoNew.setStatus(true);
-        Agency agency= agencyRepository.save(AgencyConverter.toAgency(agencyDto));
-        agencyDtoNew=AgencyConverter.toAgencyDto(agency);
+        Agency agency= agencyRepository.save(agencyConverter.toAgency(agencyDto));
+        agencyDtoNew=agencyConverter.toAgencyDto(agency);
         return agencyDtoNew;
     }
 
     // first param (agency_A) pour fussione en en deuxieme parametre
     @Override
     public AgencyDto fussione(Long agency_A, Long agency_B) {
-        Agency agencyA = new Agency();
-        agencyA = agencyRepository.findByCode(agency_A);
-        Agency agencyB = agencyRepository.findByCode(agency_B);
-        agencyA.setStatus(false);
-        Agency agencyNew = agencyRepository.save(agencyA);
-        ///////////////////////////////////////////////
-        List<Gestionnaire> listGestionnaire = agencyA.getList();
 
-        agencyB.setList(agencyA.getList());
+        Optional<Agency> agencyToBeClosed = agencyRepository.findById(agency_A);
 
-        AgencyDto agencyDto = AgencyConverter.toAgencyDto(agencyB);
+        if (!agencyToBeClosed.isPresent()) {
+
+            // THROWS CUSTOME EXCEPTIP?
+        }
+
+        Optional<Agency> agencyToBeMerged = agencyRepository.findById(agency_A);
+
+        if (!agencyToBeMerged.isPresent()) {
+            // TRHOWS CUSTOM EXCEPTION
+        }
+
+        agencyToBeClosed.get().setStatus(false);
+
 
         return agencyDto;
     }
@@ -43,7 +52,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public AgencyDto update(AgencyDto agencyDto) {
 
-        Agency agency = AgencyConverter.toAgency(agencyDto);
+        Agency agency = agencyConverter.toAgency(agencyDto);
         Agency newAgency = agencyRepository.findByCode(agency.getCode());
         if(newAgency != null)
         {
@@ -51,7 +60,7 @@ public class AgencyService implements IAgencyService {
             newAgency.setCode(agency.getCode());
             newAgency.setList(agency.getList());
             newAgency.setAdress(agency.getAdress());
-            AgencyDto newAgencyDto = AgencyConverter.toAgencyDto(agencyRepository.save(newAgency));
+            AgencyDto newAgencyDto = agencyConverter.toAgencyDto(agencyRepository.save(newAgency));
             return newAgencyDto;
         }
         else
@@ -62,7 +71,7 @@ public class AgencyService implements IAgencyService {
     public AgencyDto findByCode(Long code) {
         Agency agency = agencyRepository.findByCode(code);
         AgencyDto agencyDto = new AgencyDto();
-        agencyDto=AgencyConverter.toAgencyDto(agency);
+        agencyDto=agencyConverter.toAgencyDto(agency);
         if(agency!=null)
         return agencyDto;
         else
