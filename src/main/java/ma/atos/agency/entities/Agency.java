@@ -12,8 +12,6 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Agency {
 
     @Id
@@ -21,8 +19,16 @@ public class Agency {
     private Long code;
     private String name;
     private String adress;
+
     @OneToMany(mappedBy = "agency_id")
     private List<Gestionnaire> gestionnaires;
     private boolean isEnabled;
+
+    @OneToMany(mappedBy = "agency")
+    private List<Gestionnaire> list;
+    @OneToMany(mappedBy = "agency")
+    private List<Client> clientList;
+    private boolean status;
+
 
 }

@@ -1,14 +1,15 @@
 package ma.atos.agency.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ma.atos.agency.entities.Role;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor @NoArgsConstructor @Data
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
 public class RoleDto {
 
     private Long id;
