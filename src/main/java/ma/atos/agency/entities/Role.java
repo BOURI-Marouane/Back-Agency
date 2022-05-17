@@ -15,6 +15,10 @@ public class Role {
     private Long id;
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name="gestionnaire_id", nullable = false)
+    private Gestionnaire gestionnaire;
+
     @ManyToMany
     @JoinTable(
             name = "role_privilege",

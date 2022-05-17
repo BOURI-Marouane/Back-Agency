@@ -1,4 +1,4 @@
-package ma.atos.agency.repositories;
+package ma.atos.agency.mappers.repositories;
 
 import ma.atos.agency.entities.Agency;
 import org.springframework.data.jpa.repository.JpaRepository;
