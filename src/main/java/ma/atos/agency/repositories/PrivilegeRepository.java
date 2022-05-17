@@ -1,4 +1,4 @@
-package ma.atos.agency.mappers.repositories;
+package ma.atos.agency.repositories;
 
 import ma.atos.agency.entities.Privilege;
 import org.springframework.data.jpa.repository.JpaRepository;
