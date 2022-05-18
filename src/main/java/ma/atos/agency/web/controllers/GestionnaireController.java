@@ -63,7 +63,7 @@ public class GestionnaireController {
         }
     }
 
-      @PostMapping("/findAll")
+      @PostMapping("/all")
       public List<GestionnaireResponseDto> findAll()
       {
 
@@ -89,7 +89,7 @@ public class GestionnaireController {
       }
 
       @PostMapping("/update")
-      public ResponseEntity<GestionnaireResponseDto> update(@RequestBody GestionnaireRequestDto gestionnaireRequestDto) throws Exception
+      public ResponseEntity<GestionnaireResponseDto> update(@Valid @RequestBody GestionnaireRequestDto gestionnaireRequestDto) throws Exception
       {
           GestionnaireResponseDto gestionnaireResponseDto = null;
           GestionnaireDto gestionnaireDto=null;

@@ -11,6 +11,8 @@ import javax.persistence.*;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
     @Column(name = "clientId")
     private long id;
 
@@ -19,4 +21,5 @@ public class Client {
     @ManyToOne
     @JoinColumn(name = "agency_id")
     private Agency agency;
+
 }
