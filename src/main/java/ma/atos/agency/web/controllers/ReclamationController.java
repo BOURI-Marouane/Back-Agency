@@ -22,7 +22,7 @@ public class ReclamationController {
     @PostMapping("/reclamation")
     ResponseEntity getClientReclamation(@RequestBody ClientDto clientDto){
         try {
-            return reclamationService.getClientReclamation(clientDto.getId());
+            return reclamationService.getClientReclamation(clientDto.getClientId());
         } catch (URISyntaxException e) {
             return new ResponseEntity<>("Echec", HttpStatus.INTERNAL_SERVER_ERROR);
         }

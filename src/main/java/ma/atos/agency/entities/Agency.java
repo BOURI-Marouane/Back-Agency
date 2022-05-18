@@ -30,10 +30,7 @@ public class Agency {
 
     private boolean isEnabled;
 
-    @OneToMany(mappedBy = "agency")
-    private List<Gestionnaire> list;
-    @OneToMany(mappedBy = "agency")
-    private List<Client> clientList;
+
     private boolean status;
 
 

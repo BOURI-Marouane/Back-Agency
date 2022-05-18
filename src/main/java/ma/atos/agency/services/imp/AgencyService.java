@@ -25,16 +25,13 @@ public class AgencyService implements IAgencyService {
 
 
 
-    @Autowired  AgencyConverter agencyConverter;
-
-
     @Override
     public AgencyDto newAgency(AgencyDto agencyDto) {
         AgencyDto agencyDtoNew = new AgencyDto();
 
         //agencyDtoNew.setEnabled(true);
 
-        agencyDtoNew.setStatus(true);
+        agencyDtoNew.setEnabled(true);
 
         Agency agency= agencyRepository.save(agencyConverter.toAgency(agencyDto));
         agencyDtoNew=agencyConverter.toAgencyDto(agency);
@@ -45,55 +42,40 @@ public class AgencyService implements IAgencyService {
     @Override
     public AgencyDto fussione(Long agency_A, Long agency_B) {
 
-        Agency agencyA = new Agency();
-        agencyA = agencyRepository.findByCode(agency_A);
-        Agency agencyB = agencyRepository.findByCode(agency_B);
-        agencyA.setEnabled(false);
-        Agency agencyNew = agencyRepository.save(agencyA);
-        ///////////////////////////////////////////////
-        List<Gestionnaire> listGestionnaire = agencyA.getGestionnaires();
-
-        agencyB.setGestionnaires(agencyA.getGestionnaires());
-
-        AgencyDto agencyDto = agencyConverter.toAgencyDto(agencyB);
-
-
-        Optional<Agency> agencyToBeClosed = agencyRepository.findById(agency_A);
-
-        if (!agencyToBeClosed.isPresent()) {
-
-            // THROWS CUSTOME EXCEPTIP?
+        Optional<Agency> agencyA = agencyRepository.findById(agency_A);
+        Optional<Agency> agencyB = agencyRepository.findById(agency_B);
+        if(agencyA.isPresent() && agencyB.isPresent()){
+            agencyA.get().setEnabled(false);
+            agencyA.get().getGestionnaires().stream().forEach(item ->{
+                agencyB.get().getGestionnaires().add(item);
+            });
+            agencyA.get().getGestionnaires().clear();
+            agencyRepository.save(agencyA.get());
+            agencyRepository.save(agencyB.get());
         }
 
-        Optional<Agency> agencyToBeMerged = agencyRepository.findById(agency_A);
+        return null;
 
-        if (!agencyToBeMerged.isPresent()) {
-            // TRHOWS CUSTOM EXCEPTION
-        }
-
-        agencyToBeClosed.get().setStatus(false);
-
-
-
-        return agencyDto;
     }
 
     @Override
-    public AgencyDto update(AgencyDto agencyDto) {
+    public AgencyDto update(AgencyDto agencyDto) throws AgencyNotFoundException {
 
         Agency agency = agencyConverter.toAgency(agencyDto);
-        Agency newAgency = agencyRepository.findByCode(agency.getCode());
-        if(newAgency != null)
-        {
+        Optional<Agency> oAgency = agencyRepository.findById(agency.getCode());
+        if(!oAgency.isPresent())
+            throw new AgencyNotFoundException();
+        Agency newAgency = oAgency.get();
+
             newAgency.setName(agency.getName());
             newAgency.setCode(agency.getCode());
             newAgency.setGestionnaires(agency.getGestionnaires());
             newAgency.setAdress(agency.getAdress());
             AgencyDto newAgencyDto = agencyConverter.toAgencyDto(agencyRepository.save(newAgency));
             return newAgencyDto;
-        }
-        else
-            return null;
+
+
+
     }
 
     @Override
@@ -110,8 +92,9 @@ public class AgencyService implements IAgencyService {
     @Override
     public void delete(Long code)
     {
-        Agency agency = agencyRepository.findByCode(code);
-        agencyRepository.delete(agency);
+        Optional<Agency> agency = agencyRepository.findById(code);
+        if (agency.isPresent())
+        agencyRepository.delete(agency.get());
     }
 
     @Override

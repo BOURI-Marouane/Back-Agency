@@ -1,16 +1,12 @@
 package ma.atos.agency.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
 import ma.atos.agency.entities.Agency;
 import ma.atos.agency.entities.Role;
 
 import java.util.List;
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 
 import lombok.Getter;
 import lombok.Setter;

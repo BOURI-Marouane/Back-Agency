@@ -29,7 +29,7 @@ public class AgenceController {
     @Autowired
     AgencyConverter agencyConverter;
 
-    @PostMapping("/save")
+   /* @PostMapping("/save")
     private ResponseEntity<AgencyResponseDto> createAgency(@Valid @RequestBody AgencyRequestDto agencyRequestDto)
     {
         AgencyResponseDto agencyResponseDto = null;
@@ -45,15 +45,15 @@ public class AgenceController {
             agencyResponseDto.setMessage("Erreur technique est survenue. Veuillez contacter votre administrateur");
             return ResponseEntity.badRequest().body(agencyResponseDto);
         }
-    }
+    }*/
 
 
 
     @PostMapping("/findByCode")
-    private AgencyResponseDto findByCode(@RequestBody Long code) throws AgencyNotFoundException
+    private AgencyDto findByCode(@RequestBody Long code) throws AgencyNotFoundException
     {
         try {
-            return agencyConverter.ToResponseAgencyDto(agencyService.findByCode(code));
+            return agencyService.findByCode(code);
         }
         catch (Exception e)
         {
@@ -61,7 +61,7 @@ public class AgenceController {
         }
     }
 
-    @PostMapping("/fussione")
+    /*@PostMapping("/fussione")
     private AgencyResponseDto fussione(@RequestBody Long CodeagencyDto1,@RequestBody Long CodeagencyDto2) throws AgencyFussioneNotFound
     {
         try {
@@ -72,7 +72,7 @@ public class AgenceController {
             throw new AgencyFussioneNotFound(CodeagencyDto1,CodeagencyDto2);
         }
     }
-
+*/
     @RequestMapping("/delete")
     private void delete(@RequestBody Long code) throws AgencyNotFoundException
     {
@@ -85,7 +85,7 @@ public class AgenceController {
         }
     }
 
-    @PostMapping("/update")
+    /*@PostMapping("/update")
     private ResponseEntity<AgencyResponseDto> update(@Valid @RequestBody AgencyRequestDto agencyRequestDto)
     {
         AgencyResponseDto agencyResponseDto = agencyConverter.ToResponseAgencyDto(agencyService.update(agencyConverter.RequestToAgencyDto(agencyRequestDto)));
@@ -105,7 +105,7 @@ public class AgenceController {
         return lisResponseAgency;
     }
 
-
+    */
 
 
 }

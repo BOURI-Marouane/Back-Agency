@@ -31,7 +31,7 @@ public class ClientMapper {
     public Client MaptoEntity(ClientDto requestClientDto) throws AgencyNotFoundException {
         Client client = new Client();
         Optional<Agency> agency;
-        client.setId(requestClientDto.getId());
+        client.setId(requestClientDto.getClientId());
         client.setName(requestClientDto.getName());
         if(requestClientDto.getAgency_name() != null) {
             agency = agencyRepository.findByName(requestClientDto.getAgency_name());
@@ -45,7 +45,7 @@ public class ClientMapper {
 
     public ClientDto MapToDto(Client client) {
         ClientDto clientDto = new ClientDto();
-        clientDto.setId(client.getId());
+        clientDto.setClientId(client.getId());
         clientDto.setName(client.getName());
         if(client.getAgency()!=null)
             clientDto.setAgency_name(client.getAgency().getName());

@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Bean;
 
 public class AgencyApplication {
 
-	@Autowired
-	ApplicationContext applicationContext;
 
 	public static void main(String[] args) {
 
@@ -26,14 +24,10 @@ public class AgencyApplication {
 	}
 
 	@Bean
-
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
 
 
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
 
 }

@@ -31,30 +31,11 @@ public class AgencyConverter {
 
     public AgencyDto RequestToAgencyDto(AgencyRequestDto agencyRequestDto)
     {
-        AgencyDto agencyDto = modelMapper.map(agencyRequestDto,AgencyDto.class);
+        return modelMapper.map(agencyRequestDto,AgencyDto.class);
 
-
-    @Autowired
-    ModelMapper modelMapper;
-
-    public Agency toAgency(AgencyDto agencyDto)
-    {
-        Agency agency = new Agency();
-        agency=modelMapper.map(agencyDto, Agency.class);
-        return agency;
     }
 
-    public AgencyDto toAgencyDto(Agency agency)
-    {
-        AgencyDto agencyDto = new AgencyDto();
-        agencyDto=modelMapper.map(agency,AgencyDto.class);
-
-        return agencyDto;
-    }
-
-    public AgencyResponseDto ToResponseAgencyDto(AgencyDto agencyDto)
-    {
-        AgencyResponseDto agencyResponseDto = modelMapper.map(agencyDto,AgencyResponseDto.class);
-        return agencyResponseDto;
+    public AgencyResponseDto toAgencyResponseDto(AgencyDto byCode) {
+        return null;
     }
 }

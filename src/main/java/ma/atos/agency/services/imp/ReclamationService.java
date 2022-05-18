@@ -26,7 +26,7 @@ public class ReclamationService implements IReclamationService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        ResponseEntity<ReclamationDto> result = restTemplate.pos
+        ResponseEntity<ReclamationDto> result = restTemplate.postForEntity(uri,null,ReclamationDto.class);
 
         return result;
     }

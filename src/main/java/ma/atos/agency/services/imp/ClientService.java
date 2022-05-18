@@ -46,7 +46,7 @@ public class ClientService implements IClientService {
         Client client = clientMapper.MaptoEntity(clientDto);
         client.setId(0);
         client = clientRepository.save(client);
-        clientDto.setId(client.getId());
+        clientDto.setClientId(client.getId());
         return new ResponseEntity<>(clientDto,HttpStatus.OK);
 
     }
@@ -71,7 +71,7 @@ public class ClientService implements IClientService {
      */
     @Override
     public ResponseEntity updateClient(ClientDto clientDto) throws AgencyNotFoundException, ClientNotFoundException {
-        Optional<Client> clientOptional = clientRepository.findById(clientDto.getId());
+        Optional<Client> clientOptional = clientRepository.findById(clientDto.getClientId());
         if(!clientOptional.isPresent())
             throw new ClientNotFoundException();
          Client client = clientMapper.MaptoEntity(clientDto);
@@ -80,16 +80,17 @@ public class ClientService implements IClientService {
     }
 
     /**
-     * @param id
+     * @param
      * @return
      */
     @Override
     public ResponseEntity deleteClient(ClientDto clientDto) throws ClientNotFoundException {
-        Optional<Client> clientOptional = clientRepository.findById(clientDto.getId());
+        Optional<Client> clientOptional = clientRepository.findById(clientDto.getClientId());
         if(!clientOptional.isPresent())
             throw new ClientNotFoundException();
         clientOptional.get().setAgency(null);
         clientRepository.save(clientOptional.get());
+        clientRepository.delete(clientOptional.get());
         return ResponseEntity.ok().body(clientOptional.get());
     }
 

@@ -42,7 +42,7 @@ public class ClientController {
     @PostMapping("/get")
     ResponseEntity getCLient(@RequestBody ClientDto clientDto) throws ClientNotFoundException {
         try {
-            return clientService.getOneClientById(clientDto.getId());
+            return clientService.getOneClientById(clientDto.getClientId());
         } catch (Exception exception){
             return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
