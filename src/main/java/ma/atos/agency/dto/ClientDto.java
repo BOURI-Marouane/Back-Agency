@@ -8,9 +8,10 @@ import org.springframework.http.HttpStatus;
 @Setter
 @ToString
 public class ClientDto {
-    private long clientId;
+    private long id;
     private String name;
-    private Agency agency;
+    private String agency_name;
+
 
 
 

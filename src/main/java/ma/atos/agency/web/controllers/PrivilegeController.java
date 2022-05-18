@@ -20,7 +20,7 @@ public class PrivilegeController {
     @Autowired
     private PrivilegeMapper privilegeMapper;
 
-    @PostMapping("/AllPrivileges")
+    @PostMapping("/allpriviliges")
     Map<String,Object> all() {
         Map<String,Object> map = new HashMap<String,Object>();
         List<PrivilegeDto> listDto = new ArrayList<>();

@@ -1,13 +1,11 @@
 package ma.atos.agency.exceptions;
 
-
-public class PrivilegeNotFoundException extends Exception{
-    public PrivilegeNotFoundException(Long id){
-        super("Invalid Manager : Le privilege que vous recherchez dont l'id est "+id+" est introuvable");
+import ma.atos.agency.constantes.ConstanteAgency;
 
 public class PrivilegeNotFoundException extends Exception {
     public PrivilegeNotFoundException(){
-        super(ExceptionsEnum.PRIVILEGE_NOT_FOUND.getMessage());
+        super(ConstanteAgency.PRIVILEGE_NOT_FOUND);
+
 
     }
 }

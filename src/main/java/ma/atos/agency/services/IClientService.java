@@ -1,21 +1,19 @@
 package ma.atos.agency.services;
 
 import ma.atos.agency.dto.ClientDto;
-import ma.atos.agency.entities.Client;
+import ma.atos.agency.exceptions.AgencyNotFoundException;
 import ma.atos.agency.exceptions.ClientNotFoundException;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 public interface IClientService {
 
-    Client newClient(ClientDto clientDto);
+    ResponseEntity getAll ();
+    ResponseEntity newClient (ClientDto clientDto) throws AgencyNotFoundException;
+    ResponseEntity getOneClientById (Long id) throws ClientNotFoundException;
 
-    ClientDto getClient(Long clientId) throws ClientNotFoundException;
+    ResponseEntity<?> updateClient (ClientDto requestClientDto) throws AgencyNotFoundException, ClientNotFoundException;
 
-    void deleteClient(Long clientId) throws ClientNotFoundException;
+    ResponseEntity<?> deleteClient(ClientDto clientDto) throws ClientNotFoundException;
 
-    ClientDto updateClient(ClientDto newClient, Long clientId) throws ClientNotFoundException;
-
-    List<ClientDto> getAll();
 
 }

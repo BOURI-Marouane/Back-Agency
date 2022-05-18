@@ -1,72 +1,100 @@
 package ma.atos.agency.services.imp;
 
 import ma.atos.agency.dto.ClientDto;
-import ma.atos.agency.dto.GestionnaireDto;
-import ma.atos.agency.entities.Agency;
+import ma.atos.agency.dto.web.ResponseListClientDto;
 import ma.atos.agency.entities.Client;
-import ma.atos.agency.entities.Gestionnaire;
+import ma.atos.agency.exceptions.AgencyNotFoundException;
 import ma.atos.agency.exceptions.ClientNotFoundException;
 import ma.atos.agency.mappers.ClientMapper;
-import ma.atos.agency.mappers.GestionnaireConverter;
-import ma.atos.agency.repositories.AgencyRepository;
+
 import ma.atos.agency.repositories.ClientRepository;
 import ma.atos.agency.services.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class ClientService implements IClientService {
 
     @Autowired
     private ClientRepository clientRepository;
-
     @Autowired
-    private AgencyRepository agencyRepository;
+    private ClientMapper clientMapper;
 
+    /**
+     * @return
+     */
     @Override
-    public Client newClient(ClientDto clientDto){
-        Client client = new Client();
-        return clientRepository.save(client);
+    public ResponseEntity getAll() {
+        List<Client> clients = clientRepository.findAll();
+        List<ClientDto> clientDtos = clientMapper.MapToListClientDto(clients);
+        return new ResponseEntity<>(clientDtos,HttpStatus.OK
+        );
+
     }
 
+    /**
+     * @param
+     * @return
+     */
     @Override
-    public ClientDto getClient(Long clientId) throws ClientNotFoundException {
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException(clientId));
-        return ClientMapper.toClientDto(client);
+    public ResponseEntity newClient(ClientDto clientDto) throws AgencyNotFoundException {
+        Client client = clientMapper.MaptoEntity(clientDto);
+        client.setId(0);
+        client = clientRepository.save(client);
+        clientDto.setId(client.getId());
+        return new ResponseEntity<>(clientDto,HttpStatus.OK);
+
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
-    public List<ClientDto> getAll(){
-        List<ClientDto> listClientDto = new ArrayList<>();
-        List<Client> listClient = clientRepository.findAll();
-        listClient.forEach(item -> {
-            ClientDto dtoItem = ClientMapper.toClientDto(item);
-            listClientDto.add(dtoItem);
-        });
-        return listClientDto;
+    public ResponseEntity getOneClientById(Long id) throws ClientNotFoundException {
+        Optional<Client> client = clientRepository.findById(id);
+        if(!client.isPresent())
+            throw new ClientNotFoundException();
+        ClientDto clientDto = clientMapper.MapToDto(client.get());
+        return ResponseEntity.ok().body(clientDto);
+
     }
 
+    /**
+     * @param clientDto
+     * @return
+     */
     @Override
-    public void deleteClient(Long clientId) throws ClientNotFoundException{
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException(clientId));
-        for(Client c : client.getAgency().getClientList()){
-            c.getAgency().getClientList().remove(client);
-            agencyRepository.save(c.getAgency());
-        }
-        clientRepository.save(client);
-        clientRepository.deleteById(clientId);
+    public ResponseEntity updateClient(ClientDto clientDto) throws AgencyNotFoundException, ClientNotFoundException {
+        Optional<Client> clientOptional = clientRepository.findById(clientDto.getId());
+        if(!clientOptional.isPresent())
+            throw new ClientNotFoundException();
+         Client client = clientMapper.MaptoEntity(clientDto);
+         clientRepository.save(client);
+        return ResponseEntity.ok().body(client);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
-    public ClientDto updateClient(ClientDto newClient, Long clientId) throws ClientNotFoundException{
-        Client oldClient = clientRepository.findById(clientId).orElseThrow(() -> new ClientNotFoundException(clientId));
-        Client clientToUpdate = ClientMapper.toClient(newClient);
-        oldClient.setClientId(clientToUpdate.getClientId());
-        oldClient.setName(clientToUpdate.getName());
-        oldClient.setAgency(clientToUpdate.getAgency());
-        return ClientMapper.toClientDto(clientRepository.save(oldClient));
+    public ResponseEntity deleteClient(ClientDto clientDto) throws ClientNotFoundException {
+        Optional<Client> clientOptional = clientRepository.findById(clientDto.getId());
+        if(!clientOptional.isPresent())
+            throw new ClientNotFoundException();
+        clientOptional.get().setAgency(null);
+        clientRepository.save(clientOptional.get());
+        return ResponseEntity.ok().body(clientOptional.get());
     }
+
+    /**
+     * @return
+     */
+
 }
