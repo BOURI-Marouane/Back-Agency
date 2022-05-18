@@ -5,6 +5,7 @@ import ma.atos.agency.dto.web.ResponseClientDto;
 import ma.atos.agency.dto.web.ResponseListClientDto;
 import ma.atos.agency.entities.Client;
 import ma.atos.agency.exceptions.ClientNotFoundException;
+import ma.atos.agency.mappers.ClientMapper;
 import ma.atos.agency.services.imp.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class ClientController {
         } catch (Exception exception){
             return new ResponseEntity<>("erreur",HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
     @PostMapping("/create")
@@ -53,6 +55,7 @@ public class ClientController {
         } catch (Exception exception){
             return new ResponseEntity<>(exception.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
 
     }
     @PostMapping("/delete")

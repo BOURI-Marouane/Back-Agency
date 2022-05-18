@@ -1,26 +1,32 @@
 package ma.atos.agency.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Data
-public class Gestionnaire {
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+@Data
+
+public class Gestionnaire {
     @Id
-    private Long registrationNumber;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long registration_number;
 
     private String fullName;
 
     private String level;
 
+    @OneToMany(mappedBy = "gestionnaire")
+    private List<Role> roles;
+
     @ManyToOne
-    @JoinColumn(name="agency_id", nullable = false)
-    private Agency agency;
+    @JoinColumn(name="agency_id", nullable = true)
+    private Agency agency_id;
 }

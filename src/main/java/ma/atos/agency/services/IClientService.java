@@ -16,5 +16,4 @@ public interface IClientService {
     ResponseEntity<?> deleteClient(ClientDto clientDto) throws ClientNotFoundException;
 
 
-
 }

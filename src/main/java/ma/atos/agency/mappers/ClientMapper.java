@@ -50,5 +50,8 @@ public class ClientMapper {
         if(client.getAgency()!=null)
             clientDto.setAgency_name(client.getAgency().getName());
         return clientDto;
+
+
+
     }
 }

@@ -6,6 +6,7 @@ import ma.atos.agency.entities.Client;
 import ma.atos.agency.exceptions.AgencyNotFoundException;
 import ma.atos.agency.exceptions.ClientNotFoundException;
 import ma.atos.agency.mappers.ClientMapper;
+
 import ma.atos.agency.repositories.ClientRepository;
 import ma.atos.agency.services.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class ClientService implements IClientService {
         List<ClientDto> clientDtos = clientMapper.MapToListClientDto(clients);
         return new ResponseEntity<>(clientDtos,HttpStatus.OK
         );
+
     }
 
     /**
@@ -46,6 +48,7 @@ public class ClientService implements IClientService {
         client = clientRepository.save(client);
         clientDto.setId(client.getId());
         return new ResponseEntity<>(clientDto,HttpStatus.OK);
+
     }
 
     /**
@@ -59,6 +62,7 @@ public class ClientService implements IClientService {
             throw new ClientNotFoundException();
         ClientDto clientDto = clientMapper.MapToDto(client.get());
         return ResponseEntity.ok().body(clientDto);
+
     }
 
     /**
