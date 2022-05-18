@@ -88,7 +88,7 @@ public class AgenceController {
     @PostMapping("/update")
     private ResponseEntity<AgencyResponseDto> update(@Valid @RequestBody AgencyRequestDto agencyRequestDto)
     {
-            AgencyResponseDto agencyResponseDto = agencyConverter.ToResponseAgencyDto(agencyService.update(agencyConverter.RequestToAgencyDto(agencyRequestDto)));
+        AgencyResponseDto agencyResponseDto = agencyConverter.ToResponseAgencyDto(agencyService.update(agencyConverter.RequestToAgencyDto(agencyRequestDto)));
         return new ResponseEntity<AgencyResponseDto>(agencyResponseDto,HttpStatus.CREATED);
 
     }

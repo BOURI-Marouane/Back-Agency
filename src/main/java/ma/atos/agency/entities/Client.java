@@ -1,0 +1,20 @@
+package ma.atos.agency.entities;
+
+import lombok.Data;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+public class Client {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long clientId;
+
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "agency_id")
+    private Agency agency;
+
+}
