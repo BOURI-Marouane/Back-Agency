@@ -6,10 +6,14 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+@Data
+
 public class Gestionnaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

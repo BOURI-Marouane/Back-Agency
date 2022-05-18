@@ -12,21 +12,30 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgencyService implements IAgencyService {
     @Autowired
     AgencyRepository agencyRepository;
 
+
     @Autowired
     AgencyConverter agencyConverter;
 
 
 
+    @Autowired  AgencyConverter agencyConverter;
+
+
     @Override
     public AgencyDto newAgency(AgencyDto agencyDto) {
         AgencyDto agencyDtoNew = new AgencyDto();
+
         //agencyDtoNew.setEnabled(true);
+
+        agencyDtoNew.setStatus(true);
+
         Agency agency= agencyRepository.save(agencyConverter.toAgency(agencyDto));
         agencyDtoNew=agencyConverter.toAgencyDto(agency);
         return agencyDtoNew;
@@ -35,6 +44,7 @@ public class AgencyService implements IAgencyService {
     // first param (agency_A) pour fussione en en deuxieme parametre
     @Override
     public AgencyDto fussione(Long agency_A, Long agency_B) {
+
         Agency agencyA = new Agency();
         agencyA = agencyRepository.findByCode(agency_A);
         Agency agencyB = agencyRepository.findByCode(agency_B);
@@ -46,6 +56,24 @@ public class AgencyService implements IAgencyService {
         agencyB.setGestionnaires(agencyA.getGestionnaires());
 
         AgencyDto agencyDto = agencyConverter.toAgencyDto(agencyB);
+
+
+        Optional<Agency> agencyToBeClosed = agencyRepository.findById(agency_A);
+
+        if (!agencyToBeClosed.isPresent()) {
+
+            // THROWS CUSTOME EXCEPTIP?
+        }
+
+        Optional<Agency> agencyToBeMerged = agencyRepository.findById(agency_A);
+
+        if (!agencyToBeMerged.isPresent()) {
+            // TRHOWS CUSTOM EXCEPTION
+        }
+
+        agencyToBeClosed.get().setStatus(false);
+
+
 
         return agencyDto;
     }

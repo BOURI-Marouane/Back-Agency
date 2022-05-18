@@ -11,7 +11,8 @@ import ma.atos.agency.entities.Agency;
 public class ClientDto {
     private long clientId;
     private String name;
-    private Agency agency;
+    private String agency_name;
+
 
 
 
