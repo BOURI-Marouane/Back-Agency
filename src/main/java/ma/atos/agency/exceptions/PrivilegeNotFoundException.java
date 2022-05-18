@@ -1,7 +1,9 @@
 package ma.atos.agency.exceptions;
 
+import ma.atos.agency.constantes.ConstanteAgency;
+
 public class PrivilegeNotFoundException extends Exception {
     public PrivilegeNotFoundException(){
-        super(ExceptionsEnum.PRIVILEGE_NOT_FOUND.getMessage());
+        super(ConstanteAgency.PRIVILEGE_NOT_FOUND);
     }
 }

@@ -1,8 +1,10 @@
 package ma.atos.agency.exceptions;
 
+import ma.atos.agency.constantes.ConstanteAgency;
+
 public class ListRoleEmptyException extends Exception{
     public ListRoleEmptyException(){
-        super(ExceptionsEnum.ROLE_LIST_EMPTY.getMessage());
+        super(ConstanteAgency.ROLE_LIST_EMPTY);
     }
 
 }

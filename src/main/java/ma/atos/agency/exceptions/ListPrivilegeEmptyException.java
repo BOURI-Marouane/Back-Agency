@@ -1,8 +1,10 @@
 package ma.atos.agency.exceptions;
 
+import ma.atos.agency.constantes.ConstanteAgency;
+
 public class ListPrivilegeEmptyException extends Exception {
     public ListPrivilegeEmptyException(){
-        super(ExceptionsEnum.PRIVILEGE_LIST_EMPTY.getMessage());
+        super(ConstanteAgency.PRIVILEGE_LIST_EMPTY);
     }
 
 }

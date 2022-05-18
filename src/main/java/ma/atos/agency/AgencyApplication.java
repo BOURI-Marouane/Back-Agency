@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+
 public class AgencyApplication {
 
 	@Autowired
@@ -16,7 +17,6 @@ public class AgencyApplication {
 	public static void main(String[] args) {
 
 		SpringApplication.run(AgencyApplication.class, args);
-
 
 	}
 
