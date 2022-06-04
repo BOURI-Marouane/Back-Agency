@@ -10,6 +10,6 @@ public class AgencyDto {
     private Long code;
     private String name;
     private String adress;
-    private boolean isEnabled=true;
+    private boolean isEnabled;
 
 }

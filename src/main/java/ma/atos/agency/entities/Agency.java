@@ -30,8 +30,4 @@ public class Agency {
 
     private boolean isEnabled;
 
-
-    private boolean status;
-
-
 }

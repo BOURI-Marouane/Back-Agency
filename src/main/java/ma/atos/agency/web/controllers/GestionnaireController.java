@@ -84,7 +84,7 @@ public class GestionnaireController {
           }
           catch (Exception e)
           {
-              throw new AgencyNotFoundException(code);
+              throw new AgencyNotFoundException("code");
           }
       }
 
@@ -103,7 +103,7 @@ public class GestionnaireController {
                 gestionnaireResponseDto.setMessage("Entity is successful modified");
                 return  ResponseEntity.ok().body(gestionnaireResponseDto);
             }catch (AgencyNotFoundException ex){
-                throw  new AgencyNotFoundException(gestionnaireRequestDto.getAgency_id());
+                throw  new AgencyNotFoundException("gestionnaireRequestDto.getAgency_id()");
             }
             catch (Exception e)
             {

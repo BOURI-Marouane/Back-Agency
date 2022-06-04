@@ -30,11 +30,9 @@ public class AgencyService implements IAgencyService {
         AgencyDto agencyDtoNew = new AgencyDto();
 
         //agencyDtoNew.setEnabled(true);
-
-        agencyDtoNew.setEnabled(true);
-
-        Agency agency= agencyRepository.save(agencyConverter.toAgency(agencyDto));
-        agencyDtoNew=agencyConverter.toAgencyDto(agency);
+        Agency agency = agencyConverter.toAgency(agencyDto);
+        Agency agencyNew= agencyRepository.save(agency);
+        agencyDtoNew=agencyConverter.toAgencyDto(agencyNew);
         return agencyDtoNew;
     }
 
@@ -64,7 +62,7 @@ public class AgencyService implements IAgencyService {
         Agency agency = agencyConverter.toAgency(agencyDto);
         Optional<Agency> oAgency = agencyRepository.findById(agency.getCode());
         if(!oAgency.isPresent())
-            throw new AgencyNotFoundException();
+            throw new AgencyNotFoundException("Agency is not record");
         Agency newAgency = oAgency.get();
 
             newAgency.setName(agency.getName());
@@ -80,7 +78,7 @@ public class AgencyService implements IAgencyService {
 
     @Override
     public AgencyDto findByCode(Long code) throws AgencyNotFoundException {
-        Agency agency = agencyRepository.findById(code).orElseThrow(() -> new AgencyNotFoundException(code));
+        Agency agency = agencyRepository.findById(code).orElseThrow(() -> new AgencyNotFoundException("Agency is not record"));
         AgencyDto agencyDto = new AgencyDto();
         agencyDto=agencyConverter.toAgencyDto(agency);
         if(agency!=null)

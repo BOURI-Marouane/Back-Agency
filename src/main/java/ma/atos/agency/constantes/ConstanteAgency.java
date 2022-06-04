@@ -6,7 +6,7 @@ package ma.atos.agency.constantes;
  */
 public class ConstanteAgency {
 
-    public static final String AGENCY_NOT_FOUND = "L'agence est introuvable" ;
+
     public static String PRIVILEGE_NOT_FOUND = "Le privilege que vous recherchez est introuvable";
 
     public static String ROLE_NOT_FOUND = "Le role que vous recherchez est introuvable";
@@ -20,4 +20,7 @@ public class ConstanteAgency {
     public static String ROLE_LIST_EMPTY = "La liste Des Roles est vide";
 
     public static String INVALID_ROLE_NAME = "Le nom du role ne correspond pas aux noms du parametrage";
+
+    public static String AGENCY_NOT_FOUND = "Invalid Manager : The agency you are looking could not be found";
+
 }

@@ -1,5 +1,6 @@
 package ma.atos.agency.web.controllers;
 
+import ma.atos.agency.constantes.ConstanteAgency;
 import ma.atos.agency.dto.AgencyDto;
 import ma.atos.agency.exceptions.AgencyFussioneNotFound;
 import ma.atos.agency.exceptions.AgencyNotFoundException;
@@ -29,36 +30,49 @@ public class AgenceController {
     @Autowired
     AgencyConverter agencyConverter;
 
-   /* @PostMapping("/save")
+    @PostMapping("/save")
     private ResponseEntity<AgencyResponseDto> createAgency(@Valid @RequestBody AgencyRequestDto agencyRequestDto)
     {
         AgencyResponseDto agencyResponseDto = null;
         try {
-             agencyResponseDto = agencyConverter.ToResponseAgencyDto(agencyService.newAgency(agencyConverter.RequestToAgencyDto(agencyRequestDto)));
-             agencyResponseDto.setHttpStatus(String.valueOf(HttpStatus.CREATED));
-             agencyResponseDto.setMessage("Entity is successful created");
+
+            agencyResponseDto = agencyConverter.ToAgencyResponseDto(agencyService.newAgency(agencyConverter.ResquestToAgencyDto(agencyRequestDto)));
+            agencyResponseDto.setHttpStatus(String.valueOf(HttpStatus.CREATED));
+            agencyResponseDto.setMessage("Entity is successful created");
 
             return  ResponseEntity.ok().body(agencyResponseDto);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             agencyResponseDto.setHttpStatus(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
             agencyResponseDto.setMessage("Erreur technique est survenue. Veuillez contacter votre administrateur");
             return ResponseEntity.badRequest().body(agencyResponseDto);
         }
-    }*/
+    }
 
 
 
     @PostMapping("/findByCode")
-    private AgencyDto findByCode(@RequestBody Long code) throws AgencyNotFoundException
+    private AgencyResponseDto findByCode(@RequestBody Long code) throws AgencyNotFoundException
     {
-        try {
-            return agencyService.findByCode(code);
+        AgencyResponseDto result = new AgencyResponseDto();
+        try
+        {
+            result = agencyConverter.ToAgencyResponseDto(agencyService.findByCode(code));
+            result.setHttpStatus(HttpStatus.OK.toString());
+            result.setMessage("the record is found");
+        }
+        catch (AgencyNotFoundException ex)
+        {
+            result.setHttpStatus(String.valueOf(ex.getHttpStatus().toString()));
+            result.setMessage(ConstanteAgency.AGENCY_NOT_FOUND);
         }
         catch (Exception e)
         {
-            throw new AgencyNotFoundException(code);
+            result.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+            result.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.toString());
         }
+        return result;
     }
 
     /*@PostMapping("/fussione")
@@ -76,13 +90,13 @@ public class AgenceController {
     @RequestMapping("/delete")
     private void delete(@RequestBody Long code) throws AgencyNotFoundException
     {
-        try {
+     /*   try {
             agencyService.delete(code);
         }
         catch (Exception e)
         {
-            throw new AgencyNotFoundException(code);
-        }
+            throw new AgencyNotFoundException();
+        }*/
     }
 
     /*@PostMapping("/update")

@@ -1,15 +1,16 @@
 package ma.atos.agency.exceptions;
 
+import lombok.Data;
+import org.apache.http.HttpStatus;
+
+@Data
 public class AgencyNotFoundException extends Exception{
 
-    public AgencyNotFoundException(Long code)
+    public AgencyNotFoundException(String message)
     {
-        super("Invalid Manager : The agency you are looking for whose id is " + code + " could not be found");
-    }
-    public AgencyNotFoundException()
-    {
-        super("Invalid Manager : The agency you are looking for could not be found");
+        super(message);
     }
 
+    private HttpStatus httpStatus;
 
 }

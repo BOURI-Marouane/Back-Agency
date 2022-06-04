@@ -38,7 +38,7 @@ public class ClientMapper {
             if(agency.isPresent())
                 client.setAgency(agency.get());
             else
-                throw new AgencyNotFoundException();
+                throw new AgencyNotFoundException("");
         }
         return client;
     }

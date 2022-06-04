@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepository extends JpaRepository <Client, Long>{
 
 
-    String findby(String accountNumber);
+    //String findby(String accountNumber);
 }

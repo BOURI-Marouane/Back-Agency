@@ -46,17 +46,15 @@ public class GestionnaireService implements IGestionnaireService {
         Gestionnaire gestionnaire = gestionnaireConverter.toGestionnaire(gestionnaireDto);
         Optional<Gestionnaire> newGestionnaire = gestionnaireRepository.findById(registrationNumber);
         Optional<Agency> agency = agencyRepository.findById(gestionnaireRequestDto.getAgency_id());
-        if(newGestionnaire.isPresent() && agency.isPresent())
-        {
+
             newGestionnaire.get().setRegistration_number(gestionnaire.getRegistration_number());
             newGestionnaire.get().setFullName(gestionnaire.getFullName());
             newGestionnaire.get().setLevel(gestionnaire.getLevel());
             newGestionnaire.get().setAgency_id(agency.get());
             GestionnaireDto newgestionnaireDto = gestionnaireConverter.toGestionnaireDto(gestionnaireRepository.save(newGestionnaire.get()));
             return newgestionnaireDto;
-        }
-        else
-            throw new AgencyNotFoundException(registrationNumber);
+
+
     }
 
     @Override
