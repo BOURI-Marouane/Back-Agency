@@ -43,15 +43,16 @@ public class AgencyService implements IAgencyService {
         Optional<Agency> agencyA = agencyRepository.findById(agency_A);
         Optional<Agency> agencyB = agencyRepository.findById(agency_B);
         if(agencyA.isPresent() && agencyB.isPresent()){
-            agencyA.get().setEnabled(false);
+            agencyA.get().setStatus(false);
             agencyA.get().getGestionnaires().stream().forEach(item ->{
                 agencyB.get().getGestionnaires().add(item);
             });
             agencyA.get().getGestionnaires().clear();
             agencyRepository.save(agencyA.get());
             agencyRepository.save(agencyB.get());
+            return agencyConverter.toAgencyDto(agencyA.get());
         }
-
+        else
         return null;
 
     }
@@ -92,7 +93,7 @@ public class AgencyService implements IAgencyService {
     {
         Optional<Agency> agency = agencyRepository.findById(code);
         if (agency.isPresent())
-        agencyRepository.delete(agency.get());
+            agencyRepository.delete(agency.get());
     }
 
     @Override

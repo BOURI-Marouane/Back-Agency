@@ -4,6 +4,7 @@ import ma.atos.agency.dto.AgencyDto;
 import ma.atos.agency.dto.GestionnaireDto;
 import ma.atos.agency.entities.Agency;
 import ma.atos.agency.entities.Gestionnaire;
+import ma.atos.agency.web.dto.GeneraleDtoResponse;
 import ma.atos.agency.web.dto.Request.AgencyRequestDto;
 import ma.atos.agency.web.dto.Request.GestionnaireRequestDto;
 import ma.atos.agency.web.dto.Response.AgencyResponseDto;
@@ -40,5 +41,11 @@ public class AgencyConverter {
     public AgencyResponseDto ToAgencyResponseDto(AgencyDto agencyDto) {
         AgencyResponseDto agencyResponseDto = modelMapper.map(agencyDto, AgencyResponseDto.class);
         return agencyResponseDto;
+    }
+
+    public GeneraleDtoResponse ToGeneraleResponseDto(AgencyDto agencyDto)
+    {
+        GeneraleDtoResponse generaleDtoResponse = modelMapper.map(agencyDto,GeneraleDtoResponse.class);
+        return generaleDtoResponse;
     }
 }

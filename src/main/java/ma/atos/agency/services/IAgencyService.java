@@ -18,7 +18,7 @@ public interface IAgencyService {
 
     AgencyDto findByCode(Long code) throws AgencyNotFoundException;
 
-    void delete(Long code);
+    void delete(Long code) throws AgencyNotFoundException;
 
     List<AgencyDto> findAll();
 

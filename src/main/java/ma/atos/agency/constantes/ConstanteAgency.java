@@ -6,7 +6,7 @@ package ma.atos.agency.constantes;
  */
 public class ConstanteAgency {
 
-
+    public static String FUSS_NOT_FOUND = "Invalid Agency : The agency you are looking could not be found";
     public static String PRIVILEGE_NOT_FOUND = "Le privilege que vous recherchez est introuvable";
 
     public static String ROLE_NOT_FOUND = "Le role que vous recherchez est introuvable";

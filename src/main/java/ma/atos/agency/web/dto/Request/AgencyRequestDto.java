@@ -19,8 +19,8 @@ public class AgencyRequestDto {
     @NotEmpty
     @Size(min = 5, message = "agency adress should have at least 5 characteres")
     private String adress;
-
-    private boolean isEnabled;
+    private Long code;
+    private boolean status;
 
 
 }

@@ -28,6 +28,6 @@ public class Agency {
     @OneToMany(mappedBy = "agency")
     private List<Client> clientList;
 
-    private boolean isEnabled;
+    private boolean status;
 
 }
