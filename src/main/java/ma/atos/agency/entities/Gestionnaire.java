@@ -1,5 +1,6 @@
 package ma.atos.agency.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,5 +29,6 @@ public class Gestionnaire {
 
     @ManyToOne
     @JoinColumn(name="agency_id", nullable = true)
+    @JsonIgnore
     private Agency agency_id;
 }

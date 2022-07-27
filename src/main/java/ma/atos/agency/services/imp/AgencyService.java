@@ -3,13 +3,16 @@ package ma.atos.agency.services.imp;
 import ma.atos.agency.dto.AgencyDto;
 import ma.atos.agency.entities.Agency;
 import ma.atos.agency.entities.Gestionnaire;
+import ma.atos.agency.exceptions.AgencyFussioneNotFound;
 import ma.atos.agency.exceptions.AgencyNotFoundException;
 import ma.atos.agency.mappers.AgencyConverter;
 import ma.atos.agency.repositories.AgencyRepository;
 import ma.atos.agency.services.IAgencyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +41,8 @@ public class AgencyService implements IAgencyService {
 
     // first param (agency_A) pour fussione en en deuxieme parametre
     @Override
-    public AgencyDto fussione(Long agency_A, Long agency_B) {
+
+    public AgencyDto fussione(Long agency_A, Long agency_B) throws AgencyNotFoundException {
 
         Optional<Agency> agencyA = agencyRepository.findById(agency_A);
         Optional<Agency> agencyB = agencyRepository.findById(agency_B);
@@ -53,7 +57,10 @@ public class AgencyService implements IAgencyService {
             return agencyConverter.toAgencyDto(agencyA.get());
         }
         else
-        return null;
+        {
+           throw new AgencyNotFoundException("Not found");
+        }
+
 
     }
 

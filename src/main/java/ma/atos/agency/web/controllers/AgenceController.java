@@ -18,10 +18,7 @@ import ma.atos.agency.web.dto.Response.GestionnaireResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -36,6 +33,7 @@ public class AgenceController {
 
     @Autowired
     AgencyConverter agencyConverter;
+
 
     @PostMapping("/save")
     private AgencyResponseDto createAgency(@Valid @RequestBody AgencyRequestDto agencyRequestDto)
@@ -116,15 +114,19 @@ public class AgenceController {
             result.setHttpStatus("200");
             result.setMessage("succès de la requêt");
         }
-        catch (Exception e)
+        catch (AgencyNotFoundException ex)
         {
             result.setHttpStatus("404");
+            result.setMessage("NOT FOUND");
+        }
+        catch (Exception e)
+        {
+            result.setHttpStatus("500");
             result.setMessage(ConstanteAgency.FUSS_NOT_FOUND);
-
         }
         return result;
     }
-
+ 
   @RequestMapping("/delete")
     private GeneraleDtoResponse delete(@RequestBody GetAgencyCode getAgencyCode) throws Exception
     {

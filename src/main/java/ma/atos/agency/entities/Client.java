@@ -1,5 +1,6 @@
 package ma.atos.agency.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class Client {
 
     @ManyToOne
     @JoinColumn(name = "agency_id")
+    @JsonIgnore
     private Agency agency;
 
 }

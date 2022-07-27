@@ -36,19 +36,16 @@ public class GestionnaireController {
         GestionnaireDto gestionnaireDto = null;
         GestionnaireResponseDto gestionnaireResponseDto = null;
         try {
-
             gestionnaireDto = gestionnaireService.newGestionnaire(gestionnaireRequestDto);
             gestionnaireResponseDto = gestionnaireConverter.ToGestionnaireResponseDto(gestionnaireDto);
             gestionnaireResponseDto.setHttpStatus(String.valueOf(HttpStatus.CREATED));
             gestionnaireResponseDto.setMessage("Entity is successful created");
             return ResponseEntity.ok().body(gestionnaireResponseDto);
-
         } catch (Exception e) {
             gestionnaireResponseDto.setHttpStatus(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR));
             gestionnaireResponseDto.setMessage("Erreur technique est survenue. Veuillez contacter votre administrateur");
             return ResponseEntity.badRequest().body(gestionnaireResponseDto);
         }
-
     }
 
     @PostMapping("/findByCode")

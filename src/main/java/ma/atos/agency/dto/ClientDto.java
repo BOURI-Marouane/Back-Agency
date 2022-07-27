@@ -13,7 +13,4 @@ public class ClientDto {
     private String name;
     private String agency_name;
 
-
-
-
 }

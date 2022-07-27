@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public interface IAgencyService {
 
     AgencyDto newAgency(AgencyDto agencyDto);
-    AgencyDto fussione(Long agency_A,Long Agency_B);
+    AgencyDto fussione(Long agency_A,Long Agency_B) throws AgencyNotFoundException;
     AgencyDto update(AgencyDto agencyDto) throws AgencyNotFoundException;
 
     AgencyDto findByCode(Long code) throws AgencyNotFoundException;
