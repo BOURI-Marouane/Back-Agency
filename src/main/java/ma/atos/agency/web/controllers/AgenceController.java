@@ -56,6 +56,8 @@ public class AgenceController {
 
 
 
+
+
     @PostMapping("/findByCode")
     private AgencyResponseDto findByCode(@RequestBody GetAgencyCode getAgencyCode) throws Exception
     {
@@ -75,7 +77,6 @@ public class AgenceController {
         {
             result.setHttpStatus("500");
             result.setMessage("erreurs serveur");
-
         }
         return result;
     }

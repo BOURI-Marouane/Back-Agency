@@ -21,4 +21,5 @@ public class AgencyResponseDto extends GeneraleDtoResponse {
     private boolean status;
     private List<Gestionnaire> gestionnaires = new ArrayList<>();
     private List<Client> client = new ArrayList<>();
+
 }
